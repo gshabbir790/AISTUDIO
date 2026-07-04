@@ -18,16 +18,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
     - name: Create .env file for API Key
       run: echo "GEMINI_API_KEY=AQ.Ab8RN6JACTZHt2dTEQ0PWEmUfi4BqLb4cZdQUNpwizW6xduzmg" > .env
 
-    - name: Make gradlew executable
-      run: chmod +x gradlew
-
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
+    - name: Build Debug APK with Gradle directly
+      run: gradle assembleDebug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
