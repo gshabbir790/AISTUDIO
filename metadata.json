@@ -1,0 +1,6 @@
+{
+  "name": "Multi-Image Crop & Resizer",
+  "description": "A powerful multi-image cropping and resizing utility that supports grid splitting, custom dimension sizing, and target file size compression.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
