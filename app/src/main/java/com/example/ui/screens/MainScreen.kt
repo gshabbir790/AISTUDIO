@@ -234,19 +234,28 @@ fun MainScreen(viewModel: CropViewModel) {
                         }
                     )
                     
-                    // Live Alignment Canvas Guide
-                    LiveAlignmentGuideCard(
-                        sourceImage = gridSourceImage!!,
-                        settings = gridSettings
-                    )
-                    
-                    // Sliders for Fine Tuning Margins and Spacings
-                    GridAdjustmentsCard(
-                        settings = gridSettings,
-                        sourceWidth = gridSourceImage!!.width,
-                        sourceHeight = gridSourceImage!!.height,
-                        onSettingsChange = { updated -> viewModel.updateGridSettings { updated } }
-                    )
+                    // Row for side-by-side view of live preview and sliders
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        // Left side: Live Alignment Canvas Guide
+                        LiveAlignmentGuideCard(
+                            sourceImage = gridSourceImage!!,
+                            settings = gridSettings,
+                            modifier = Modifier.weight(1f)
+                        )
+                        
+                        // Right side: Sliders for Fine Tuning Margins and Spacings
+                        GridAdjustmentsCard(
+                            settings = gridSettings,
+                            sourceWidth = gridSourceImage!!.width,
+                            sourceHeight = gridSourceImage!!.height,
+                            onSettingsChange = { updated -> viewModel.updateGridSettings { updated } },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
                 }
 
                 // 7. CROP & RESIZE TRIGGER BUTTON
@@ -399,29 +408,27 @@ fun HeaderBanner() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
+            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF00B0FF), Color(0xFF006064))
+                    colors = listOf(Color(0xFF0D47A1), Color(0xFF1976D2)) // Professional Deep Blue Slate
                 )
             )
-            .padding(vertical = 22.dp, horizontal = 16.dp),
+            .padding(vertical = 24.dp, horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = "ملٹی امیج کراپ اینڈ ریسائزر",
                 color = Color.White,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp),
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = "Multi-Image Crop & Resizer",
                 color = Color.White.copy(alpha = 0.85f),
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
                 textAlign = TextAlign.Center
             )
         }
@@ -432,7 +439,7 @@ fun HeaderBanner() {
 fun DeveloperCreditsBox() {
     val infiniteTransition = rememberInfiniteTransition(label = "CreditsBlink")
     val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.5f,
+        initialValue = 0.6f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(1200, easing = LinearEasing),
@@ -445,12 +452,12 @@ fun DeveloperCreditsBox() {
         modifier = Modifier
             .fillMaxWidth()
             .border(
-                width = 2.dp,
-                color = Color(0xFFE0F7FA),
-                shape = RoundedCornerShape(10.dp)
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
+                shape = RoundedCornerShape(12.dp)
             ),
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFCC80))
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
     ) {
         Column(
             modifier = Modifier
@@ -461,11 +468,10 @@ fun DeveloperCreditsBox() {
         ) {
             Text(
                 text = "ڈیویلپر: غلام شبیر پرنسپل گورنمنٹ ہائر سیکنڈری سکول وریام والا",
-                color = Color.Black.copy(alpha = alpha),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary.copy(alpha = alpha),
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center,
-                lineHeight = 20.sp
+                lineHeight = 22.sp
             )
         }
     }
@@ -483,26 +489,26 @@ fun DimensionSettingsCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = Color(0xFFFFE082), shape = RoundedCornerShape(10.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF8E1)),
-        shape = RoundedCornerShape(10.dp)
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
                 text = "تصویر کا کسٹم سائز اور کوالٹی:",
-                color = Color(0xFFE65100),
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Right,
                 modifier = Modifier.fillMaxWidth()
             )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 DimensionInputItem(
                     label = "چوڑائی (px)",
@@ -540,10 +546,9 @@ fun DimensionInputItem(
     ) {
         Text(
             text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF5D4037),
-            modifier = Modifier.padding(bottom = 4.dp)
+            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 6.dp)
         )
         OutlinedTextField(
             value = value,
@@ -552,10 +557,10 @@ fun DimensionInputItem(
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                focusedBorderColor = Color(0xFFFFB300),
-                unfocusedBorderColor = Color(0xFFFFD54F)
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
             ),
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -575,19 +580,19 @@ fun AppModeContainer(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = Color(0xFFC5E1A5), shape = RoundedCornerShape(10.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F8E9)),
-        shape = RoundedCornerShape(10.dp)
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
                 text = "کام کا موڈ سیلیکٹ کریں (Select App Mode):",
-                color = Color(0xFF33691E),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Right,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -622,23 +627,30 @@ fun AppModeOption(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(6.dp))
-            .background(if (isSelected) Color(0xFFDCEDC8) else Color.White)
+            .clip(RoundedCornerShape(8.dp))
+            .background(if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
             .clickable { onClick() }
-            .padding(vertical = 10.dp, horizontal = 8.dp),
+            .border(
+                width = 1.dp,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(vertical = 12.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         RadioButton(
             selected = isSelected,
             onClick = onClick,
-            colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF4CAF50))
+            colors = RadioButtonDefaults.colors(
+                selectedColor = MaterialTheme.colorScheme.primary,
+                unselectedColor = MaterialTheme.colorScheme.outline
+            )
         )
         Text(
             text = title,
-            color = Color(0xFF33691E),
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
+            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center
         )
     }
@@ -654,15 +666,18 @@ fun UploadZone(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(130.dp)
+            .height(135.dp)
             .clickable { onClick() }
             .border(
-                width = 2.dp,
-                color = if (hasFile) Color(0xFF4CAF50) else Color(0xFF90CAF9),
-                shape = RoundedCornerShape(10.dp)
+                width = 1.5.dp,
+                color = if (hasFile) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                shape = RoundedCornerShape(12.dp)
             ),
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = if (hasFile) Color(0xFFE8F5E9) else Color.White)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (hasFile) MaterialTheme.colorScheme.primary.copy(alpha = 0.05f) else MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = if (hasFile) 2.dp else 0.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -672,22 +687,21 @@ fun UploadZone(
             Icon(
                 imageVector = if (hasFile) Icons.Default.CheckCircle else Icons.Default.CloudUpload,
                 contentDescription = "Upload Icon",
-                tint = if (hasFile) Color(0xFF4CAF50) else Color(0xFF2196F3),
-                modifier = Modifier.size(36.dp)
+                tint = if (hasFile) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = title,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = subtitle,
-                fontSize = 11.sp,
-                color = if (hasFile) Color(0xFF2E7D32) else Color.Gray,
+                style = MaterialTheme.typography.bodySmall,
+                color = if (hasFile) MaterialTheme.colorScheme.primary else Color.Gray,
                 textAlign = TextAlign.Center
             )
         }
@@ -704,19 +718,19 @@ fun GridDimensionsCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = Color(0xFF90CAF9), shape = RoundedCornerShape(10.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD)),
-        shape = RoundedCornerShape(10.dp)
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
                 text = "پیج پر تصاویر کی تعداد بتائیں:",
-                color = Color(0xFF0D47A1),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Right,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -755,10 +769,9 @@ fun GridDimensionInput(
     ) {
         Text(
             text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF0D47A1),
-            modifier = Modifier.padding(bottom = 4.dp)
+            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 6.dp)
         )
         OutlinedTextField(
             value = value.toString(),
@@ -768,10 +781,10 @@ fun GridDimensionInput(
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                focusedBorderColor = Color(0xFF1E88E5),
-                unfocusedBorderColor = Color(0xFF90CAF9)
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
             ),
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -786,25 +799,26 @@ fun GridDimensionInput(
 @Composable
 fun LiveAlignmentGuideCard(
     sourceImage: Bitmap,
-    settings: GridSettings
+    settings: GridSettings,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = Color(0xFFEF9A9A), shape = RoundedCornerShape(10.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(10.dp)
+            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.outline), RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
                 text = "لائیو الائنمنٹ گائیڈ (Live Crop Guide):",
-                color = Color(0xFFC62828),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Right,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -814,7 +828,7 @@ fun LiveAlignmentGuideCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(sourceImage.width.toFloat() / sourceImage.height.toFloat())
-                    .clip(RoundedCornerShape(6.dp))
+                    .clip(RoundedCornerShape(8.dp))
                     .background(Color.Black)
             ) {
                 // Background loaded Image
@@ -858,7 +872,7 @@ fun LiveAlignmentGuideCard(
                             val y = tM + r * (cellH + rS)
 
                             drawRect(
-                                color = Color.Red,
+                                color = Color(0xFFE53935), // Pure, clear red guide lines
                                 topLeft = Offset(x, y),
                                 size = Size(cellW, cellH),
                                 style = Stroke(width = 1.5.dp.toPx())
@@ -876,24 +890,25 @@ fun GridAdjustmentsCard(
     settings: GridSettings,
     sourceWidth: Int,
     sourceHeight: Int,
-    onSettingsChange: (GridSettings) -> Unit
+    onSettingsChange: (GridSettings) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = Color(0xFFB0BEC5), shape = RoundedCornerShape(10.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(10.dp)
+            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.outline), RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
                 text = "بارڈرز اور دوری ٹھیک کریں (Adjust Borders & Spacing):",
-                color = Color(0xFF37474F),
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Right,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -960,15 +975,14 @@ fun AdjustmentSliderItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF9F9F9), RoundedCornerShape(6.dp))
-            .border(width = 1.dp, color = Color(0xFFE0E0E0), shape = RoundedCornerShape(6.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(8.dp))
             .padding(10.dp)
     ) {
         Text(
             text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF424242),
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Right
         )
@@ -977,9 +991,9 @@ fun AdjustmentSliderItem(
             onValueChange = onValueChange,
             valueRange = minValue..maxValue,
             colors = SliderDefaults.colors(
-                thumbColor = Color(0xFF00B0FF),
-                activeTrackColor = Color(0xFF0288D1),
-                inactiveTrackColor = Color(0xFFE0E0E0)
+                thumbColor = MaterialTheme.colorScheme.primary,
+                activeTrackColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.outlineVariant
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -1001,13 +1015,14 @@ fun SelectedImagesSection(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = Color(0xFF90CAF9), shape = RoundedCornerShape(10.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(10.dp)
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -1017,9 +1032,8 @@ fun SelectedImagesSection(
                 Text(
                     text = "منتخب کردہ تصاویر (${selectedImages.size})",
                     fontFamily = urduFont,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    color = Color.Black
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary
                 )
 
                 Row(
@@ -1028,7 +1042,7 @@ fun SelectedImagesSection(
                 ) {
                     TextButton(
                         onClick = onClearAllClick,
-                        colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFFD32F2F)),
+                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                         modifier = Modifier.minimumInteractiveComponentSize()
                     ) {
@@ -1038,13 +1052,13 @@ fun SelectedImagesSection(
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = "سب صاف کریں", fontFamily = urduFont, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text(text = "سب صاف کریں", fontFamily = urduFont, style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
                     }
 
                     OutlinedButton(
                         onClick = onAddMoreClick,
-                        border = BorderStroke(1.dp, Color(0xFF0288D1)),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF0288D1)),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary),
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                         shape = RoundedCornerShape(8.dp),
                         modifier = Modifier.minimumInteractiveComponentSize()
@@ -1055,7 +1069,7 @@ fun SelectedImagesSection(
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = "مزید شامل کریں", fontFamily = urduFont, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text(text = "مزید شامل کریں", fontFamily = urduFont, style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
                     }
                 }
             }
@@ -1075,9 +1089,9 @@ fun SelectedImagesSection(
                             Card(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .border(width = 1.dp, color = Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
-                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
-                                shape = RoundedCornerShape(8.dp)
+                                    .border(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(10.dp)),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)),
+                                shape = RoundedCornerShape(10.dp)
                             ) {
                                 Row(
                                     modifier = Modifier
@@ -1091,8 +1105,8 @@ fun SelectedImagesSection(
                                         contentDescription = "Selected Image",
                                         modifier = Modifier
                                             .size(44.dp)
-                                            .clip(RoundedCornerShape(4.dp))
-                                            .border(width = 1.dp, color = Color(0xFFE0E0E0), shape = RoundedCornerShape(4.dp)),
+                                            .clip(RoundedCornerShape(6.dp))
+                                            .border(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(6.dp)),
                                         contentScale = ContentScale.Crop
                                     )
 
@@ -1102,16 +1116,15 @@ fun SelectedImagesSection(
                                     ) {
                                         Text(
                                             text = name,
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Bold,
+                                            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis,
-                                            color = Color.Black
+                                            color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = "${bitmap.width}x${bitmap.height}",
-                                            fontSize = 10.sp,
-                                            color = Color.Gray
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
 
@@ -1122,7 +1135,7 @@ fun SelectedImagesSection(
                                         Icon(
                                             imageVector = Icons.Default.Crop,
                                             contentDescription = "Crop Image",
-                                            tint = Color(0xFF0288D1),
+                                            tint = MaterialTheme.colorScheme.primary,
                                             modifier = Modifier.size(18.dp)
                                         )
                                     }
@@ -1134,7 +1147,7 @@ fun SelectedImagesSection(
                                         Icon(
                                             imageVector = Icons.Default.Delete,
                                             contentDescription = "Remove Image",
-                                            tint = Color(0xFFD32F2F),
+                                            tint = MaterialTheme.colorScheme.error,
                                             modifier = Modifier.size(16.dp)
                                         )
                                     }
@@ -1413,7 +1426,7 @@ fun ImagePreviewCropDialog(
                             }
                         },
                         modifier = Modifier.weight(1.5f).height(44.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Crop,
@@ -1446,26 +1459,26 @@ fun ResultsSection(
         // Success Message
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)),
-            border = BorderStroke(1.dp, Color(0xFFA5D6A7))
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)),
+            shape = RoundedCornerShape(12.dp)
         ) {
             Row(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(14.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.CheckCircle,
                     contentDescription = "Success",
-                    tint = Color(0xFF2E7D32),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "تصاویر ${duration} سیکنڈز میں تیار ہوئیں۔ اب نام تبدیل کریں اور زپ فائل ڈاؤن لوڈ کرلیں۔",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1B5E20),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(1f)
                 )
@@ -1474,9 +1487,8 @@ fun ResultsSection(
 
         Text(
             text = "🎉 تیار شدہ تصاویر (یہاں نام تبدیل کریں):",
-            color = Color(0xFF2E7D32),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Right,
             modifier = Modifier.fillMaxWidth()
         )
@@ -1512,29 +1524,17 @@ fun ResultsSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)
-                .height(56.dp)
+                .height(54.dp)
                 .testTag("download_zip_button"),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-            contentPadding = PaddingValues(0.dp),
-            shape = RoundedCornerShape(10.dp)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+            shape = RoundedCornerShape(27.dp),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(Color(0xFF4CAF50), Color(0xFF2E7D32))
-                        )
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "👉 Click to Download ZIP 👈",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            Text(
+                text = "👉 Click to Download ZIP 👈",
+                color = Color.White,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+            )
         }
     }
 }
@@ -1547,14 +1547,15 @@ fun ProcessedImageCard(
 ) {
     Card(
         modifier = modifier
-            .border(width = 1.dp, color = Color(0xFFCCCCCC), shape = RoundedCornerShape(8.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(8.dp)
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(6.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Image(
                 bitmap = imageItem.bitmap.asImageBitmap(),
@@ -1562,24 +1563,24 @@ fun ProcessedImageCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .border(width = 1.dp, color = Color(0xFFEEEEEE), shape = RoundedCornerShape(4.dp)),
+                    .clip(RoundedCornerShape(8.dp))
+                    .border(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
 
             Text(
                 text = imageItem.defaultName,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                textAlign = TextAlign.Center
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Text(
                 text = imageItem.sizeText,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFFD32F2F),
+                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center
             )
 
@@ -1589,7 +1590,7 @@ fun ProcessedImageCard(
                 placeholder = {
                     Text(
                         text = "نیا نام درج کریں...",
-                        fontSize = 10.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -1598,12 +1599,13 @@ fun ProcessedImageCard(
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.bodySmall.copy(
                     textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 10.sp
+                    fontWeight = FontWeight.Medium
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF008CBA),
-                    unfocusedBorderColor = Color(0xFFB0BEC5)
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
                 )
             )
         }
@@ -1629,9 +1631,10 @@ fun WelcomeModal(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .border(width = 3.dp, color = Color(0xFF2E7D32), shape = RoundedCornerShape(15.dp)),
-            shape = RoundedCornerShape(15.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+                .border(width = 1.dp, color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f), shape = RoundedCornerShape(16.dp)),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -1641,18 +1644,16 @@ fun WelcomeModal(
                 Text(
                     text = "⚠️ اہم اور ضروری پیغام!",
                     fontFamily = urduFont,
-                    color = Color(0xFFD32F2F),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center
                 )
 
                 Text(
                     text = "ایپ اوپن کرنے کے لئے برائے مہربانی 10 بار درود شریف پڑھیں۔",
                     fontFamily = urduFont,
-                    color = Color(0xFF555555),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     lineHeight = 22.sp
                 )
@@ -1660,7 +1661,7 @@ fun WelcomeModal(
                 // Blinking Text Animation
                 val infiniteTransition = rememberInfiniteTransition(label = "WelcomeBlink")
                 val alpha by infiniteTransition.animateFloat(
-                    initialValue = 0.3f,
+                    initialValue = 0.4f,
                     targetValue = 1f,
                     animationSpec = infiniteRepeatable(
                         animation = tween(1000, easing = LinearEasing),
@@ -1672,25 +1673,23 @@ fun WelcomeModal(
                 Text(
                     text = "صلی اللہ علیہ والہ وسلم",
                     fontFamily = urduFont,
-                    color = Color(0xFF2E7D32).copy(alpha = alpha),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = alpha),
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp, fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
 
                 // Counter Box
                 Box(
                     modifier = Modifier
-                        .background(Color(0xFFE8F5E9), RoundedCornerShape(20.dp))
-                        .border(BorderStroke(1.dp, Color(0xFF2E7D32)), RoundedCornerShape(20.dp))
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f), RoundedCornerShape(20.dp))
+                        .border(BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)), RoundedCornerShape(20.dp))
                         .padding(vertical = 8.dp, horizontal = 20.dp)
                 ) {
                     Text(
                         text = "پڑھی گئی تعداد: $count / 10",
                         fontFamily = urduFont,
-                        color = Color(0xFF2E7D32),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -1699,7 +1698,7 @@ fun WelcomeModal(
                 val bounceTransition = rememberInfiniteTransition(label = "WelcomeButtonBounce")
                 val translateY by bounceTransition.animateFloat(
                     initialValue = 0f,
-                    targetValue = -6f,
+                    targetValue = -4f,
                     animationSpec = infiniteRepeatable(
                         animation = tween(1200, easing = FastOutSlowInEasing),
                         repeatMode = RepeatMode.Reverse
@@ -1712,31 +1711,18 @@ fun WelcomeModal(
                     modifier = Modifier
                         .fillMaxWidth()
                         .offset(y = translateY.dp)
-                        .height(56.dp)
+                        .height(52.dp)
                         .testTag("welcome_darood_count_button"),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    contentPadding = PaddingValues(0.dp),
-                    shape = RoundedCornerShape(28.dp)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    shape = RoundedCornerShape(26.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(Color(0xFF4CAF50), Color(0xFF2E7D32))
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "👉 درود پاک پڑھ کر یہاں کلک کریں 👈",
-                            fontFamily = urduFont,
-                            color = Color.White,
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                    Text(
+                        text = "👉 درود پاک پڑھ کر یہاں کلک کریں 👈",
+                        fontFamily = urduFont,
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
@@ -1760,9 +1746,10 @@ fun DownloadModal(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .border(width = 3.dp, color = Color(0xFF0288D1), shape = RoundedCornerShape(15.dp)),
-            shape = RoundedCornerShape(15.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+                .border(width = 1.dp, color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f), shape = RoundedCornerShape(16.dp)),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -1773,18 +1760,16 @@ fun DownloadModal(
                     Text(
                         text = "📥 ڈاؤن لوڈ کرنے سے پہلے ایک نیکی!",
                         fontFamily = urduFont,
-                        color = Color(0xFF008CBA),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Center
                     )
 
                     Text(
                         text = "اپنی تصاویر ڈاؤن لوڈ کرنے کے لئے 2 بار درود شریف پڑھیں۔",
                         fontFamily = urduFont,
-                        color = Color(0xFF555555),
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
                         lineHeight = 22.sp
                     )
@@ -1792,7 +1777,7 @@ fun DownloadModal(
                     // Blinking Text Animation
                     val infiniteTransition = rememberInfiniteTransition(label = "DownloadBlink")
                     val alpha by infiniteTransition.animateFloat(
-                        initialValue = 0.3f,
+                        initialValue = 0.4f,
                         targetValue = 1f,
                         animationSpec = infiniteRepeatable(
                             animation = tween(1000, easing = LinearEasing),
@@ -1804,25 +1789,23 @@ fun DownloadModal(
                     Text(
                         text = "صلی اللہ علیہ والہ وسلم",
                         fontFamily = urduFont,
-                        color = Color(0xFF2E7D32).copy(alpha = alpha),
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = alpha),
+                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp, fontWeight = FontWeight.Bold),
                         textAlign = TextAlign.Center
                     )
 
                     // Counter Box
                     Box(
                         modifier = Modifier
-                            .background(Color(0xFFE1F5FE), RoundedCornerShape(20.dp))
-                            .border(BorderStroke(1.dp, Color(0xFF0288D1)), RoundedCornerShape(20.dp))
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f), RoundedCornerShape(20.dp))
+                            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)), RoundedCornerShape(20.dp))
                             .padding(vertical = 8.dp, horizontal = 20.dp)
                     ) {
                         Text(
                             text = "پڑھی گئی تعداد: $count / 2",
                             fontFamily = urduFont,
-                            color = Color(0xFF0288D1),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -1832,40 +1815,26 @@ fun DownloadModal(
                         onClick = onCountClick,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp)
+                            .height(52.dp)
                             .testTag("download_darood_count_button"),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                        contentPadding = PaddingValues(0.dp),
-                        shape = RoundedCornerShape(28.dp)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                        shape = RoundedCornerShape(26.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    brush = Brush.verticalGradient(
-                                        colors = listOf(Color(0xFF00B0FF), Color(0xFF0288D1))
-                                    )
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "👉 درود پاک پڑھ کر یہاں کلک کریں 👈",
-                                fontFamily = urduFont,
-                                color = Color.White,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        Text(
+                            text = "👉 درود پاک پڑھ کر یہاں کلک کریں 👈",
+                            fontFamily = urduFont,
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 } else {
                     // Success Message
                     Text(
                         text = "✨ جزاک اللہ خیر ✨",
                         fontFamily = urduFont,
-                        color = Color(0xFF2E7D32),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(vertical = 24.dp)
                     )
@@ -1890,9 +1859,10 @@ fun CheatingAlertDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .border(width = 1.dp, color = Color(0xFFCCCCCC), shape = RoundedCornerShape(12.dp)),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(12.dp)
+                .border(width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -1902,9 +1872,8 @@ fun CheatingAlertDialog(
                 Text(
                     text = message,
                     fontFamily = urduFont,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF333333),
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     lineHeight = 22.sp
                 )
@@ -1915,28 +1884,15 @@ fun CheatingAlertDialog(
                         .fillMaxWidth()
                         .height(48.dp)
                         .testTag("cheating_confirm_button"),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    contentPadding = PaddingValues(0.dp),
-                    shape = RoundedCornerShape(8.dp)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    shape = RoundedCornerShape(24.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(Color(0xFF00B0FF), Color(0xFF0288D1))
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "جی بہتر، دوبارہ پڑھتا ہوں",
-                            fontFamily = urduFont,
-                            color = Color.White,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                    Text(
+                        text = "جی بہتر، دوبارہ پڑھتا ہوں",
+                        fontFamily = urduFont,
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                    )
                 }
             }
         }
